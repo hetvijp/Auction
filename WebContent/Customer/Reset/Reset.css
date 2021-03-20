@@ -1,0 +1,9 @@
+@charset "ISO-8859-1";
+
+.submit, .back, .logout{
+	padding-top: 0.5rem;
+}
+
+a{
+	text-decoration: none;
+}
