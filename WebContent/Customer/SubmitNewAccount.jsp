@@ -55,6 +55,11 @@
 			ps.setString(7, address);
 			
 			ps.executeUpdate();
+			
+			String insertEndUser = "INSERT INTO enduser values (?)";
+			PreparedStatement ps2 = con.prepareStatement(insertEndUser);
+			ps2.setString(1, userId);
+			ps2.executeUpdate();
 	%>
 			<h4>Account Created!</h4>
 			<div class="submit">

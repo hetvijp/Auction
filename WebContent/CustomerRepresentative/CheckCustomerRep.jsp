@@ -21,12 +21,15 @@
 		Statement stmt = con.createStatement();
 		ResultSet username;
 		ResultSet pass;
-		username = stmt.executeQuery("SELECT * from account where username='" + userId + "'");
+		username = stmt.executeQuery("SELECT * from customerrep where username='" + userId + "'");
 		
 		if(username.next())
 		{
-			String name = username.getString("name");
-			pass = stmt.executeQuery("SELECT * from account where password='" + password + "'");
+			ResultSet customerrep;
+			customerrep = stmt.executeQuery("SELECT * from account where username='" + userId + "'");
+			customerrep.next();
+			String name = customerrep.getString("name");
+			pass = stmt.executeQuery("SELECT * from account where username='" + userId + "' and password='" + password + "'");
 	
 			if(pass.next()){
 				session.setAttribute("user", userId);
