@@ -5,9 +5,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<link rel="stylesheet" href="Customer.css" type="text/css">
-<title>Main Menu</title>
+	<meta charset="ISO-8859-1">
+	<link rel="stylesheet" href="Customer.css" type="text/css">
+	<title>Main Menu</title>
+	<style>
+		body {
+			font-family: sans-serif;
+		}
+	</style>
 </head>
 <body>
 	
@@ -71,23 +76,23 @@
 		// THE FOLLOWING IS ESSENTIALLY THE "TABLE OF CONTENTS", EVERYWHERE THE END-USER MAY NEED TO NAVIGATE
 	%>
 
-	<h3>Main Menu</h3>
+	<h2>Main Menu</h2>
 
-	<p>View all auctions <a href="ExistingAuctions/AuctionsMain.jsp"><button>here</button></a></p>
-	<p>Create a new auction <a href="CreatingAuctions/NewAuctionsMain.jsp"><button>here</button></a></p>
-	<p>Do you want to delete your account?</p>
+	<h4>View all auctions <a href="ExistingAuctions/AuctionsMain.jsp"><button>here</button></a></h4>
+	<h4>Create a new auction <a href="CreatingAuctions/NewAuctionsMain.jsp"><button>here</button></a></h4>
+	<h4>Post a new question <a href="postQuestions.jsp"><button>here</button></a></h4>
+	
+	<h4>Reset Password <a href="Reset/ResetForm.jsp"><button>here</button></a></h4>
+	
+	<h4>Do you want to delete your account?</h4>
 		<form action="DeleteCustomer.jsp">
 			<input class="deleteSubmit" type="Submit" value="Delete">
 			<input type="hidden" name="name" value=<%=name%>>
 		</form>
-	<p>Reset Password</p>	
-	<div class="submit">
-		<a href="Reset/ResetForm.jsp"><button>Reset</button></a>
-	</div>
+	<br>
 	<div class="logout">
 		<a href="CustomerLogout.jsp"><button>Logout</button></a>
 	</div>
-
 <% 
 		con.close();
 	}

@@ -9,6 +9,18 @@
 <body>
 	<h1>Successfully logged in!</h1>
 	<h3>Welcome <%= session.getAttribute("name") %>!</h3>
+	
+	<div>
+		<p>Create Customer Representative Account</p>
+		<a href="CreateCR.jsp"><button>Create</button></a>
+	</div>
+	
+	<div>
+		<p>Create Sales Report</p>
+		<a href="SalesReport.jsp"><button>Create</button></a>
+	</div>
+	
+	
 	<div><a href="AdminLogout.jsp"><button>Logout</button></a></div>
 </body>
 </html>
