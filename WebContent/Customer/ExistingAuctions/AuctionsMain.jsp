@@ -170,10 +170,10 @@
 				</td>
 			</tr>
 	<%
-			
 		}
 		
-	%> </table> <% 		
+	%> </table>
+	<% 
 		con.close();
 	}
 	catch (Exception ex){

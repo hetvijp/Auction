@@ -181,7 +181,7 @@
 	<br>
 	
 	<div>
-	If you would like to bid, select the total amount: 
+	If you would like to bid, select the total amount here: 
 		<form action="ProcessingBid.jsp" Method="POST">
 			<input type="number" name="Bid Amount" placeholder=<%=legitMin%> min=<%=legitMin%> step="0.01" id="bid_amount" required>
 			<br>
@@ -190,6 +190,10 @@
 			<input type="hidden" name="Auction ID" value=<%=auctionID%>>
 		</form>
 	</div>
+	<br>
+	<p>Start <b>automatic bidding</b> on this item <a href="AutoBid.jsp?auctionId=<%=auctionID%>"><button>Here</button></a></p> 
+	<p>Note: <b>Please do not set up automatic bidding on items which you have already bid on (manually or automatically).</b></p>
+	<br>
 	<%
 	
 		// THE FOLLOWING SHOWS THE HISTORY OF BIDS ON THIS AUCTION
@@ -203,7 +207,7 @@
 			
 	<% 		} else { %> 
 			
-			<p>Here's a history of the bids already placed in this auction!</p>
+			<h3>History of Bids</h3>
 			<br>
 			
 			<table> 

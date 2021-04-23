@@ -160,7 +160,7 @@
 		// THE FOLLOWING SHOWS THE HISTORY OF BIDS ON THIS AUCTION
 			Statement stmt_bid = con.createStatement();
 			ResultSet result_bid = stmt_bid.executeQuery("SELECT username, bid_amount FROM bids WHERE auction_id = " + auctionID + " ORDER BY bid_amount desc;");
-		
+			
 			if (!result_bid.next()) {
 			// IF WE'RE HERE, THERE'S BEEN NOTHING BID YET
 	%> 
@@ -182,8 +182,8 @@
 					<td> <% out.print(result_bid.getString("username")); %> </td>
 					<td> <% out.print(result_bid.getFloat("bid_amount")); %> </td>
 				</tr>
-		<% 		} while (result_bid.next()); %> 
-		
+		<% 		} while (result_bid.next()); 
+		%> 
 			</table>
 		<%}
 	
