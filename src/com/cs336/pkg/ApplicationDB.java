@@ -11,7 +11,7 @@ public class ApplicationDB {
 	
 	public Connection getConnection() {
 		
-		String connectionUrl = "jdbc:mysql://localhost:3306/accountdb_test"; // WRITE DB URL
+		String connectionUrl = "jdbc:mysql://localhost:3306/auctiondb"; // WRITE DB URL
 		Connection connection = null;
 		
 		try {
