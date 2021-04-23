@@ -7,7 +7,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet" href="Customer.css" type="text/css">
-<title>Insert title here</title>
+<title>Processing New Account</title>
 </head>
 <body>
 	
@@ -24,6 +24,7 @@
 		String dob = request.getParameter("DOB");
 		String address = request.getParameter("Address");
 		String password = request.getParameter("Password");
+		String password2 = request.getParameter("Repeat Password");
 		
 		ResultSet result = stmt.executeQuery("SELECT * from account where username='" + userId + "'");
 		
@@ -41,7 +42,14 @@
 		</div>
 	<%
 		}
-		else{
+		else if (!password.equals(password2)){
+	%>
+		<p>Password inputs do not match. Please check your password inputs.</p>
+		<div class="submit">
+			<a href="CreateCustomer.jsp"><button>Create account</button></a>
+		</div>
+	<%			
+		} else {
 			String insert = "INSERT INTO account(username, name, password, email, phone, dob, address)" + "VALUES (?,?,?,?,?,?,?)";
 			
 			PreparedStatement ps = con.prepareStatement(insert);

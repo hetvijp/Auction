@@ -5,12 +5,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<link rel="stylesheet" href="LoginPage.css" type="text/css">
-<title>Login Page</title>
+	<meta charset="ISO-8859-1">
+	<link rel="stylesheet" href="LoginPage.css" type="text/css">
+	<title>Login Page</title>
+	
+	<style>
+		body {
+			font-family: sans-serif;
+		}
+		
+		table, tr, td {
+			border: 1px solid black;
+		}
+	</style>
+	
 </head>
 <body>
-	<h1>Login Page!!</h1>
+	<h1>Login Page</h1>
 	
 	<div class="customer">
 		<a href="Customer/CustomerLogin.jsp"><button>Customer</button></a>

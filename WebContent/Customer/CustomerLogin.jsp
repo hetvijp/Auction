@@ -18,7 +18,7 @@
 		<br />
 		<div class="password">
 			<label for="password">Password: </label>
-			<input type="password" name="Password" minlength="8" maxlength="20" id="password" required/>
+			<input type="password" name="Password" minlength="8" maxlength="40" id="password" required/>
 		</div>
 		<div class="submit">
 			<input type="submit" value="Submit"/>

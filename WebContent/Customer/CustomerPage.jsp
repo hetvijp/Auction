@@ -7,16 +7,14 @@
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet" href="Customer.css" type="text/css">
-<title>Customer Page</title>
+<title>Main Menu</title>
 </head>
 <body>
 	
-	<h1>Successfully logged in!</h1>
-	<h3>Welcome <%= session.getAttribute("name") %>!</h3>
-	<p>Do you want to delete your account?</p>
+	<h2>Welcome <%= session.getAttribute("name") %>!</h2>
 	
 	<%
-	
+	try {
 		ApplicationDB db = new ApplicationDB();
 		Connection con = db.getConnection();
 		Statement stmt = con.createStatement();
@@ -25,28 +23,79 @@
 		
 		ResultSet result = stmt.executeQuery("select * from account where username='" + userId + "'");
 		
-		while(result.next()){
-			String name = result.getString(2);
+		result.next();
+		String name = result.getString(2);
+		
+		// THIS SECTION GIVES US THE CONFIRMATION STEP FOR BUYERS ON AUCTIONS
+		Statement stmt_closeAuc = con.createStatement();
+		ResultSet resultca = stmt_closeAuc.executeQuery("SELECT * FROM auction a join technology t using (product_id) WHERE a.sold = 0 and a.end_date_time < NOW() and a.highest_bid >= a.min_price and a.highest_user='" + userId + "';");
+				
+		if (resultca.next()) {
+			%> <h4>There are some auctions that you have won, and you need to confirm purchase to complete.</h4> <%
+			do {
+				String productName = resultca.getString("product_name");
+				int auctionID = resultca.getInt("auction_id");
+				%> 
+				<p>The auction involving "<% out.print(productName); %>" is over and you were the highest bidder! Congratulations! Complete the purchase.</p>
+				<form action="ExistingAuctions/AcceptAuction.jsp" method="POST">
+					<input class="descSubmit" type="Submit" value="Confirm Purchase">
+					<input type="hidden" name="auctionID" value=<%=auctionID%>>
+					<input type="hidden" name="productName" value=<%=productName%>>				
+				</form>
+				<br>
+				<% 
+			} while (resultca.next());
+					
+		}
+		
+		// THIS PORTION CHECKS IF THERE'S ANY ALERTS THAT THERE HAS BEEN A HIGHER BID ON ANY AUCTION THAT THIS USER IS INVOLVED IN
+		Statement stmt_bidcheck = con.createStatement();
+		ResultSet resultbc = stmt_bidcheck.executeQuery("SELECT * FROM (auto_bids b join auction a using (auction_id)) join technology t using (product_id) where b.username='" + userId + "';");
+		
+		if (resultbc.next()) {
+			do {
+				boolean new_high = resultbc.getBoolean("new_high");
+				if (new_high == true) {
+					 String product = resultbc.getString("product_name");
+					 %> <p>The auction you've made a bid in involving "<% out.print(product); %>" has a new highest bid. Please check active auctions to see if you still have a chance to bid!</p> <%
+					 int auction_id = resultbc.getInt("auction_id");
+					 PreparedStatement stmtl = con.prepareStatement("UPDATE auto_bids SET new_high = false WHERE auction_id = ? and username = ?");
+					 stmtl.setInt(1, auction_id);
+					 stmtl.setString(2, userId);
+					stmtl.executeUpdate();
+				}
+			} while (resultbc.next());
 			
-			
+		}
+	
+		// THE FOLLOWING IS ESSENTIALLY THE "TABLE OF CONTENTS", EVERYWHERE THE END-USER MAY NEED TO NAVIGATE
 	%>
+
+	<h3>Main Menu</h3>
+
+	<p>View all auctions <a href="ExistingAuctions/AuctionsMain.jsp"><button>here</button></a></p>
+	<p>Create a new auction <a href="CreatingAuctions/NewAuctionsMain.jsp"><button>here</button></a></p>
+	<p>Do you want to delete your account?</p>
 		<form action="DeleteCustomer.jsp">
 			<input class="deleteSubmit" type="Submit" value="Delete">
 			<input type="hidden" name="name" value=<%=name%>>
 		</form>
-		
-	<%
-		}
-	%>
-	
 	<p>Reset Password</p>	
 	<div class="submit">
 		<a href="Reset/ResetForm.jsp"><button>Reset</button></a>
 	</div>
-	
 	<div class="logout">
 		<a href="CustomerLogout.jsp"><button>Logout</button></a>
 	</div>
+
+<% 
+		con.close();
+	}
+	catch (Exception ex){
+		out.print(ex);
+	}
+	
+%>
 
 </body>
 </html>
