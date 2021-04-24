@@ -26,7 +26,6 @@
 	%>
 	
 	<h2>Set up the auto bidding</h2>
-	<p>The highest price for this auction is $<%=max%>. Set your highest limit more than the the current highest price.</p>
 	
 	<form action="createAutoBid.jsp">
 		<div>

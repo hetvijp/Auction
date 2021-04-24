@@ -24,6 +24,11 @@
 			String username = ""; int id = 0;
 			float currentHighestBid = 0; String highestUser = "";
 			float newHighestBid = 0;
+			
+			ResultSet currentPrice = stmt.executeQuery("SELECT init_price from auction where auction_id = " + auctionId);
+			currentPrice.next();
+			float price = currentPrice.getFloat("init_price");
+		
 				
 			// INSERT INTO AUTO_BIDS TABLE WITH NEW DATA
 			String insert = "INSERT into auto_bids(username, auction_id, auto_increment, auto_upper_bound, new_high)" + "VALUES(?,?,?,?,?)";
@@ -35,14 +40,51 @@
 			ps.setInt(5, 0);	
 			ps.executeUpdate();
 			
+			ResultSet count = stmt.executeQuery("SELECT count(auction_id) as count from bids where auction_id = " + auctionId);
+			count.next();
+			int countnum = count.getInt("count");
+			
+			float total = autoIncrement + price;
+			
+			if(countnum == 0)
+			{
+				PreparedStatement ps2 = con.prepareStatement("UPDATE auction set highest_bid = ?, highest_user = ? where auction_id = " + auctionId + ";");
+				ps2.setFloat(1, total);
+				ps2.setString(2, userId);
+				ps2.executeUpdate();
+				
+				PreparedStatement insertIntoBids = con.prepareStatement("INSERT into bids(username,auction_id,date_time,bid_amount)" + "VALUES(?,?,NOW(),?)");
+				insertIntoBids.setString(1, userId);
+				insertIntoBids.setInt(2, auctionId);
+				insertIntoBids.setFloat(3, total);
+				insertIntoBids.executeUpdate();
+			}
+			else
+			{
+				ResultSet totalBid = stmt.executeQuery("SELECT max(bid_amount) as max1 from bids where auction_id = " + auctionId);
+				totalBid.next();
+				float totalB = totalBid.getFloat("max1");
+				
+				float totalBidAmount = totalB + autoIncrement;
+				
+				PreparedStatement updateAuction = con.prepareStatement("UPDATE auction set highest_bid = ?, highest_user = ? where auction_id = " + auctionId + ";");
+				updateAuction.setFloat(1, totalBidAmount);
+				updateAuction.setString(2, userId);
+				updateAuction.executeUpdate();
+				
+				PreparedStatement insertIntoBids = con.prepareStatement("INSERT into bids(username,auction_id,date_time,bid_amount)" + "VALUES(?,?,NOW(),?)");
+				insertIntoBids.setString(1, userId);
+				insertIntoBids.setInt(2, auctionId);
+				insertIntoBids.setFloat(3, totalBidAmount);
+				insertIntoBids.executeUpdate();
+			}
 			
 			// ADD NEW BIDS WHEN A BUYER BIDS HIGHER
 			ResultSet result1 = stmt.executeQuery("SELECT max(bid_amount) as amount from bids where auction_id =" + auctionId);
 			result1.next();
 			currentHighestBid = result1.getFloat("amount");
 			
-			ResultSet result2 = stmt.executeQuery("SELECT * from auto_bids where auction_id = '" + auctionId +"' and auto_upper_bound <> 'NULL' and auto_increment <> 'NULL';");
-			result2.next();
+			ResultSet result2 = stmt.executeQuery("SELECT * from auto_bids where auction_id = '" + auctionId +"' and auto_upper_bound <> 'NULL' and auto_increment <> 'NULL' and username <> '" + userId + "'");
 			
 			while(result2.next())
 			{
@@ -65,10 +107,10 @@
 					update.executeUpdate();
 					
 					// UPDATE AUCTION WITH NEW HIGHEST USER
-					PreparedStatement ps2 = con.prepareStatement("UPDATE auction set highest_bid = ?, highest_user = ? where auction_id = " + auctionId + ";");
-					ps2.setFloat(1, newHighestBid);
-					ps2.setString(2, name);
-					ps2.executeUpdate();
+					PreparedStatement ps4 = con.prepareStatement("UPDATE auction set highest_bid = ?, highest_user = ? where auction_id = " + auctionId + ";");
+					ps4.setFloat(1, newHighestBid);
+					ps4.setString(2, name);
+					ps4.executeUpdate();
 				}
 				else if(currentHighestBid > upperBound){ %>
 					<p>Someone else bid higher than you</p>
