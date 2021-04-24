@@ -6,9 +6,12 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Delete Auction</title>
 </head>
 <body>
+	<a href="CustomerRepPage.jsp"><button>Back</button></a>
+	<br>
+	
 	<form action="deleteAuctionConfirmation.jsp" method="POST">
     	<div>
     		<label>Auction Id</label>

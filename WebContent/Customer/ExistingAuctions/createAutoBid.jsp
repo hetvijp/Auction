@@ -41,7 +41,7 @@
 			result1.next();
 			currentHighestBid = result1.getFloat("amount");
 			
-			ResultSet result2 = stmt.executeQuery("SELECT * from auto_bids where auction_id = '" + auctionId +"'");
+			ResultSet result2 = stmt.executeQuery("SELECT * from auto_bids where auction_id = '" + auctionId +"' and auto_upper_bound <> 'NULL' and auto_increment <> 'NULL';");
 			result2.next();
 			
 			while(result2.next())

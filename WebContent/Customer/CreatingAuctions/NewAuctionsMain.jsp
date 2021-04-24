@@ -23,10 +23,6 @@
 	
 	<a href="../CustomerPage.jsp"><button>Back to Main Menu</button></a>
 	
-	<h3>Creating a New Auction</h3>
-	
-	<p><%= session.getAttribute("name") %>, do you see the item you would like to sell here?</p>
-	
 	<%
 	try {
 		ApplicationDB db = new ApplicationDB();
@@ -35,7 +31,7 @@
 		
 		String userId = (String) session.getAttribute("user");
 		
-		// THIS SECTION GIVES US THE CONFIRMATION STEP FOR BUYERS ON AUCTIONS
+		// THIS SECTION GIVES US THE CONFIRMATION STEP FOR BUYERS THAT WON AUCTIONS
 		Statement stmt_closeAuc = con.createStatement();
 		ResultSet resultca = stmt_closeAuc.executeQuery("SELECT * FROM auction a join technology t using (product_id) WHERE a.sold = 0 and a.end_date_time < NOW() and a.highest_bid >= a.min_price and a.highest_user='" + userId + "';");
 		
@@ -57,7 +53,7 @@
 			
 		}
 		
-		// FIRST WE CHECK FOR ANY ALERTS OF HIGHER BIDS IN AUCTIONS THAT THIS USER IS INVOLVED IN
+		// HERE, WE CHECK FOR ANY ALERTS OF HIGHER BIDS IN AUCTIONS THAT THIS USER IS INVOLVED IN
 		Statement stmt_bidcheck = con.createStatement();
 		ResultSet resultbc = stmt_bidcheck.executeQuery("SELECT * FROM (auto_bids b join auction a using (auction_id)) join technology t using (product_id) where b.username='" + userId + "';");
 		
@@ -78,19 +74,21 @@
 			
 		}
 		
+		
+		%>
+		<h3>Creating a New Auction</h3>
+		<p><%= session.getAttribute("name") %>, do you see the item you would like to sell here?</p> 
+		<%
 		// THIS WILL SHOW THE USER ALL THE ITEMS THAT ARE CURRENTLY STORED IN OUR DATABASE
 		// IF THEY SEE THE ONE THEY WANT TO SELL, THEY SIMPLY CHOOSE THAT ITEM AND SET ALL OTHER INFORMATION ACCORDINGLY
 		ResultSet result = stmt.executeQuery("select * from technology;");
 		
-		if (!result.next()) {
+		if (!result.next()) { // JUST IN CASE SOMEONE WOULD'VE WIPED ALL OF THE PRODUCTS FROM OUR DATABASE
 			%> <p>There are no products in our system as of yet. Please enter your item below.</p> <%
-		}
-		
+		} else { // DISPLAY ALL ITEMS
 		%> 
-		
 		<br>
 		<br>
-		
 		<table>
 			<tr>
 				<td>Product Name</td>
@@ -100,10 +98,8 @@
 			</tr>
 		
 		<%
-		
-		do {
-			
-			int productID = result.getInt("product_id");
+			do {
+				int productID = result.getInt("product_id");
 		%>
 			<tr>
 				<td>
@@ -122,21 +118,16 @@
 					</form>
 				</td>
 			</tr>
-		
 	<%
-			
-		} while (result.next());
+			} while (result.next());
+		}
 		
-		// IF THE USER DOESN'T SEE THE ITEM THEY WISH TO SELL IN OUR DATABASE, THEY WILL ENTER ALL THE OTHER SPECS AND INFO ON ANOTHER PAGE
-		
+		// IF THE USER DOESN'T SEE THE ITEM THEY WISH TO SELL IN OUR DATABASE, THEY WILL ENTER ALL THE OTHER SPECS AND INFO ON ANOTHER PAGE (USING FORM BELOW)
 	%>
-	
 		</table>
-		
 		<br>
 		<br>
-		
-		<p>If you don't see your item in the above list (please check all details in Here's My Item), please help us by providing some information regarding your product.</p>
+		<p>If you don't see your item in the above list (please check all of the details by clicking "Here's My Item"), please help us by providing some information regarding your product.</p>
 		<form method="post" action="UnknownProduct.jsp">
 			<input type="radio" name="Item Type" value="Phone"/> My item is a phone.
 		  	<br>
@@ -147,7 +138,6 @@
 		 	<br>
 		  	<input type="submit" value="submit" />
 		</form>
-
 <%
 		con.close();
 	}

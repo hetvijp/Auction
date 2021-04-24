@@ -51,9 +51,9 @@
 			ResultSet resulti = stmt_info.executeQuery("SELECT DATE(end_date_time) as end_date, TIME(end_date_time) as end_time, product_id, min_increment, highest_bid, init_price FROM auction WHERE auction_id = " + auctionID + ";");
 			resulti.next();
 		
-			// NOTE FOR ANYONE WHO'S CURIOUS: WE'RE CHOOSING TO STORE CURRENCY VALUES IN A BIG DECIMAL OBJECT
-			// FLOATING POINTS CANNOT ACCURATELY STORE MOST DECIMALS IN BASE-10 ACCURATELY WITHOUT ROUNDING
-			// HOPEFULLY THIS FIXES THE ISSUE
+			// NOTE FOR ANYONE WHO'S CURIOUS: WE'RE CHOOSING TO STORE CURRENCY VALUES IN A "BIGDECIMAL" OBJECT
+			// FLOATING POINTS CANNOT ACCURATELY STORE MOST DECIMALS IN BASE-10 ACCURATELY WITHOUT ROUNDING (AS I FOUND OUT THE HARD WAY)
+			// HOPEFULLY THIS FIXES ANY ISSUE THAT MAY ARISE
 			int productID = resulti.getInt("product_id");
 			String mi = resulti.getString("min_increment");
 			BigDecimal min_increment = new BigDecimal(mi);
@@ -63,7 +63,7 @@
 			BigDecimal initial_price = new BigDecimal(ip);
 			BigDecimal baseline = initial_price;
 		
-			if (highest_bid.compareTo(initial_price) > 0) {
+			if (highest_bid.compareTo(initial_price) > 0) { // IF THE HIGHEST BID IS HIGHER THAN THE INITIAL PRICE, THAN THAT IS THE NEW BASELINE PRICE
 				baseline = highest_bid;
 			}
 	%> 
@@ -173,9 +173,7 @@
 			}
 		
 		// WE THEN HAVE A FORM FOR SUBMITTING A NEW BID (MANUALLY)
-		
 		BigDecimal min = baseline.add(min_increment);
-		float legitMin = min.floatValue();
 	%> 
 	
 	<br>
@@ -183,7 +181,7 @@
 	<div>
 	If you would like to bid, select the total amount here: 
 		<form action="ProcessingBid.jsp" Method="POST">
-			<input type="number" name="Bid Amount" placeholder=<%=legitMin%> min=<%=legitMin%> step="0.01" id="bid_amount" required>
+			<p>$<input type="number" name="Bid Amount" placeholder=<%=min%> min=<%=min%> step="any" id="bid_amount" required></p>
 			<br>
 			<input type="submit" value="Submit!">
 			<input type="hidden" name="Username" value=<%=userID%>>
@@ -191,6 +189,8 @@
 		</form>
 	</div>
 	<br>
+	
+	<% // THE FOLLOWING IS A LINK TO A DIFFERENT WEBPAGE TO SET UP AUTOMATIC BIDDING %>
 	<p>Start <b>automatic bidding</b> on this item <a href="AutoBid.jsp?auctionId=<%=auctionID%>"><button>Here</button></a></p> 
 	<p>Note: <b>Please do not set up automatic bidding on items which you have already bid on (manually or automatically).</b></p>
 	<br>
@@ -202,27 +202,21 @@
 		
 			if (!result_bid.next()) {
 			// IF WE'RE HERE, THERE'S BEEN NOTHING BID YET
-	%> 
-			<p>Be the <b>first</b>! There are no other bids at this time.</p> 
-			
+	%> <p>Be the <b>first</b>! There are no other bids at this time.</p> 
 	<% 		} else { %> 
-			
 			<h3>History of Bids</h3>
 			<br>
-			
 			<table> 
 				<tr>
 					<td> User </td>
 					<td> Their Bid </td>
 				</tr>
-				
 		<%		do { %> 
 				<tr>
 					<td> <% out.print(result_bid.getString("username")); %> </td>
 					<td> $<% out.print(result_bid.getFloat("bid_amount")); %> </td>
 				</tr>
 		<% 		} while (result_bid.next()); %> 
-		
 			</table>
 		<%}
 	

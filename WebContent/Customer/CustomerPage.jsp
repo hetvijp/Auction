@@ -31,7 +31,7 @@
 		result.next();
 		String name = result.getString(2);
 		
-		// THIS SECTION GIVES US THE CONFIRMATION STEP FOR BUYERS ON AUCTIONS
+		// THIS SECTION GIVES US THE CONFIRMATION STEP FOR BUYERS THAT WON AUCTIONS
 		Statement stmt_closeAuc = con.createStatement();
 		ResultSet resultca = stmt_closeAuc.executeQuery("SELECT * FROM auction a join technology t using (product_id) WHERE a.sold = 0 and a.end_date_time < NOW() and a.highest_bid >= a.min_price and a.highest_user='" + userId + "';");
 				

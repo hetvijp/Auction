@@ -7,7 +7,7 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<link rel="stylesheet" href="Customer.css" type="text/css">
-	<title>Technology Products for Sale</title>
+	<title>Input New Product</title>
 	<style>
 		body {
 			font-family: sans-serif;

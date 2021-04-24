@@ -7,7 +7,7 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<link rel="stylesheet" href="Customer.css" type="text/css">
-	<title>Technology Products for Sale</title>
+	<title>Technology Products Sold</title>
 	<style>
 		body {
 			font-family: sans-serif;
@@ -36,7 +36,6 @@
 		String userID = (String) session.getAttribute("user");
 		int auctionID = Integer.parseInt(request.getParameter("auctionID"));
 		
-		
 		ResultSet resulti = stmt_info.executeQuery("SELECT DATE(end_date_time) as end_date, TIME(end_date_time) as end_time, product_id, min_price, highest_bid, highest_user, sold FROM auction WHERE auction_id = " + auctionID + ";");
 		resulti.next();
 		
@@ -50,7 +49,7 @@
 		} else if (highest_bid >= min_price && highest_bid > 0) {
 			%> <h4>There was a user that had the highest bid upon the end of the auction, but they have yet to <em>officially</em> purchase the item.</h4> <% 
 		} else {
-			%> <h5>No one bid higher than the reserve price set by the auctioner, so there was <b>no winner</b> for this auction.</h5> <% 
+			%> <h5>No one bid higher than the reserve price set by the auctioneer, so there was <b>no winner</b> for this auction.</h5> <% 
 		}
 	%> 
 	
@@ -148,29 +147,23 @@
 				
 			</table>
 	<%
-			
 			} else {
 			// IF WE'RE HERE, SOMETHING HAS GONE WRONG WITH THE JOIN
 			%> <p>An error has occurred. Please contact the administrator of the website to get the issue resolved.</p> <%
 			}
-	%> 
-	
-	<%
 	
 		// THE FOLLOWING SHOWS THE HISTORY OF BIDS ON THIS AUCTION
 			Statement stmt_bid = con.createStatement();
 			ResultSet result_bid = stmt_bid.executeQuery("SELECT username, bid_amount FROM bids WHERE auction_id = " + auctionID + " ORDER BY bid_amount desc;");
 			
 			if (!result_bid.next()) {
-			// IF WE'RE HERE, THERE'S BEEN NOTHING BID YET
+			// IF WE'RE HERE, NOTHING WAS BID
 	%> 
 			<p>There were no bids on this auction, unfortunately.</p> 
 			
-	<% 		} else { %> 
-			
+	<% 		} else { // IF WE END UP HERE, WE PRINT OUT A TABLE OF ALL THE BIDS %> 
 			<p>Here's a history of the bids that were placed in this auction.</p>
 			<br>
-			
 			<table> 
 				<tr>
 					<td> User </td>

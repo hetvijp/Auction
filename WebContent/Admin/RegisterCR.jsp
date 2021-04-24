@@ -7,7 +7,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet" href="Customer.css" type="text/css">
-<title>Insert title here</title>
+<title>Create Customer Rep Confirmation</title>
 </head>
 <body>
 	

@@ -7,7 +7,7 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<link rel="stylesheet" href="Customer.css" type="text/css">
-	<title>Tech for Sale</title>
+	<title>Technology Products for Sale</title>
 	<style>
 		body {
 			font-family: sans-serif;
@@ -31,7 +31,7 @@
 		
 		String userId = (String) session.getAttribute("user");
 		
-		// THIS SECTION GIVES US THE CONFIRMATION STEP FOR BUYERS ON AUCTIONS
+		// THIS SECTION GIVES US THE CONFIRMATION STEP FOR BUYERS THAT WON AUCTIONS
 		Statement stmt_closeAuc = con.createStatement();
 		ResultSet resultca = stmt_closeAuc.executeQuery("SELECT * FROM auction a join technology t using (product_id) WHERE a.sold = 0 and a.end_date_time < NOW() and a.highest_bid >= a.min_price and a.highest_user='" + userId + "';");
 				
@@ -53,7 +53,7 @@
 					
 		}
 		
-		// FIRST OF ALL, WE CHECK IF THERE HAS BEEN A HIGHER BID ON AN AUCTION INVOLVING THIS USER
+		// HERE, WE CHECK IF THERE HAS BEEN A HIGHER BID ON AN AUCTION INVOLVING THIS USER
 		// IN THIS TESTING ENVIRONMENT, THE ALERTS WILL ALL POP ON THE MAIN CUSTOMER PAGE, BUT IF THERE WERE MULTIPLE USERS ACTIVE AT THE SAME TIME
 		// 		WE WOULD NEED TO GIVE AN ALERT SYSTEM THAT'S NOT JUST ON THE MAIN MENU PAGE
 		Statement stmt_bidcheck = con.createStatement();
@@ -78,7 +78,6 @@
 	%>
 	
 	<h3><%= session.getAttribute("name") %>, here are the active auctions today! The closer to the top of the list, the sooner it closes!</h3>
-	
 	<table>
 		<tr>
 			<td> Product </td>
@@ -120,16 +119,11 @@
 			</tr>
 		
 	<%
-			
-		}
-		
+		} // THE FOLLOWING WILL PRINT OUT ALL INFORMATION REGARDING AUCTIONS THAT HAVE PREVIOUSLY CLOSED
 		%></table>
 		
 		<br>
-		
 		<h3>Here are the auctions that have closed.</h3>
-		
-		
 		<table>
 		<tr>
 			<td> Product </td>
@@ -139,7 +133,6 @@
 		</tr>
 		
 		<%
-		
 		ResultSet result2 = stmt.executeQuery ("SELECT auction_id, product_name, DATE(end_date_time) as date, TIME(end_date_time) as time, min_price, highest_bid, highest_user FROM auction JOIN technology USING (product_id) WHERE end_date_time <= NOW() ORDER BY end_date_time desc;");
 		
 		while(result2.next()) {

@@ -6,9 +6,12 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Deactivate Customer Account</title>
 </head>
 <body>
+		<a href="CustomerRepPage.jsp"><button>Back</button></a>
+		<br>
+		
 		<form action="deactivateAccountConfirm.jsp" method="POST">
     		<label>Account name</label>
           	<input type="text" name="account_name" placeholder="Username" required> <br>

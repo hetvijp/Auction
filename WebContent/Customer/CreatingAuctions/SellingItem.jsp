@@ -159,7 +159,6 @@
 		
 		String userID = (String) session.getAttribute("user");
 		// THE FOLLOWING IS A FORM FOR ALL THE AUCTION INFO
-	
 		%>
 		<br>
 		<form action="CreatingAuction.jsp" method="POST">

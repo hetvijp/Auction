@@ -7,7 +7,7 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<link rel="stylesheet" href="Customer.css" type="text/css">
-	<title>Congrats!</title>
+	<title>Congratulations!</title>
 	<style>
 		body {
 			font-family: sans-serif;
@@ -30,6 +30,7 @@
 		String userId = (String) session.getAttribute("user");
 		int auctionID = Integer.parseInt(request.getParameter("auctionID"));
 		
+		// CHANGING THE AUCTION TUPLE TO READ AS "SOLD"
 		PreparedStatement stmtc = con.prepareStatement("UPDATE auction SET sold = 1 WHERE auction_id = ?;");
 		stmtc.setInt(1, auctionID);
 		stmtc.executeUpdate();

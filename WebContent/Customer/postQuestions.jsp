@@ -6,12 +6,12 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Questions?</title>
 </head>
 <body>
 	<h1>Enter your question</h1>
 	<form action="registerQuestion.jsp" method="POST">
-		<textarea maxlength=250 id="question" name="question" required></textarea>
+		<textarea maxlength=200 id="question" name="question" required></textarea>
 		<input type="submit" value="Submit">
 	</form>
 	

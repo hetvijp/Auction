@@ -9,6 +9,9 @@
 <title>Create Customer Representative</title>
 </head>
 <body>
+	<a href="AdminPage.jsp"><button>Back</button></a>
+	<br>
+	
 	<h2>Create a Customer Rep Account</h2>
 	<form action="RegisterCR.jsp" method="POST">
 		<div>

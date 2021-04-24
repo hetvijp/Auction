@@ -6,9 +6,12 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Sales Report Menu</title>
 </head>
 <body>
+	<a href="AdminPage.jsp"><button>Back</button></a>
+	<br>
+	
 	<h3>What type of sales report do you want to check?</h3>
 	<ul>
 		<li><a href="salesReportFile.jsp?type=totalEarnings">Total Earnings</a></li>
