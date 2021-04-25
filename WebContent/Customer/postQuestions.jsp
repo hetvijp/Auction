@@ -9,6 +9,7 @@
 <title>Questions?</title>
 </head>
 <body>
+		
 	<h1>Enter your question</h1>
 	<form action="registerQuestion.jsp" method="POST">
 		<textarea maxlength=200 id="question" name="question" required></textarea>
@@ -24,8 +25,6 @@
 		String userId = (String) session.getAttribute("user");
 		String questions = "SELECT * from question";
 		ResultSet result = stmt.executeQuery(questions);
-		String ans = "Waiting for the answer";
-				
 		
 		if(result.next()){
 %>
@@ -41,6 +40,7 @@
 							<% if(session.getAttribute("type") != "CR") { %>
 								<td><%= result.getString("ans") %></td>
 							<% } else { %>
+								<td><%= result.getString("ans") %></td>
 								<form action="registerAnswers.jsp?quesId=<%= result.getInt("qid") %>" method="POST">
 									<td>
 										<textarea type="textarea" name="Answer" required></textarea>

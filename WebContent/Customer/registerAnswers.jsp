@@ -22,7 +22,6 @@
 		PreparedStatement ps = con.prepareStatement(insert);
 		ps.setString(1, answer);
 		ps.setInt(2, queId);
-		
 		ps.executeUpdate();
 		
 		response.sendRedirect("../CustomerRepresentative/CustomerRepPage.jsp");
