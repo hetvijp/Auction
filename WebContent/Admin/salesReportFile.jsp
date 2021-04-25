@@ -42,7 +42,7 @@
 <%	
 			}
 		}else if(type.equals("earningsPerItem")){
-			String earningPerItem = "SELECT product_id, SUM(highest_bid) as total FROM auction where sold = 0 GROUP BY product_id";
+			String earningPerItem = "SELECT product_id, SUM(highest_bid) as total FROM auction where sold = 1 GROUP BY product_id";
 			ps = con.prepareStatement(earningPerItem);
 			result = ps.executeQuery();
 			
@@ -141,7 +141,7 @@
 				}
 			
 		}else if(type.equals("earningPerEndUser")){
-			String earningPerEndUser = "SELECT username, SUM(highest_bid) as total FROM auction where sold = 0 GROUP BY username";
+			String earningPerEndUser = "SELECT username, SUM(highest_bid) as total FROM auction where sold = 1 GROUP BY username";
 			ps = con.prepareStatement(earningPerEndUser);
 			result = ps.executeQuery();
 			
@@ -169,7 +169,7 @@
 			}
 			
 		}else if(type.equals("bestSelling")){
-			String bestSelling = "SELECT product_id, COUNT(product_id) as count, SUM(highest_bid) as total FROM auction where sold = 0 GROUP BY product_id ORDER BY COUNT(product_id) DESC";
+			String bestSelling = "SELECT product_id, COUNT(product_id) as count, SUM(highest_bid) as total FROM auction where sold = 1 GROUP BY product_id ORDER BY COUNT(product_id) DESC";
 			ps = con.prepareStatement(bestSelling);
 			result = ps.executeQuery();
 			
